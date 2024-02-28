@@ -12,7 +12,6 @@ use mmdbus::modem::Modem as ModemAccess;
 use mmdbus::modem_signal::ModemSignal;
 use mmdbus::modem_modem3gpp::ModemModem3gpp;
 use mmdbus::sim::Sim as SimTrait;
-use nmdbus::device_modem::DeviceModem;
 
 const DBUS_NAME: &str = "org.freedesktop.ModemManager1";
 const DBUS_PATH: &str = "/org/freedesktop/ModemManager1";
@@ -99,9 +98,6 @@ impl Modem {
 	}
 	pub fn device_identifier(&self) -> Result<String, Error> {
 		self.dbus.proxy(&self.path).device_identifier()
-	}
-	pub fn device_id(&self) -> Result<String, Error> {
-		self.dbus.proxy(&self.path).device_id()
 	}
 
 	/// Overall state of the modem, given as a MMModemState value.
