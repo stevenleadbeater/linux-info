@@ -96,8 +96,8 @@ impl Modem {
 	pub fn device(&self) -> Result<String, Error> {
 		self.dbus.proxy(&self.path).device()
 	}
-	pub fn device_identifier(&self) -> Result<String, Error> {
-		self.dbus.proxy(&self.path).device_identifier()
+	pub fn ports(&self) -> Result<Vec<(String, u32)>, Error> {
+		self.dbus.proxy(&self.path).ports()
 	}
 
 	/// Overall state of the modem, given as a MMModemState value.
