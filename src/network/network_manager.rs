@@ -140,11 +140,11 @@ pub struct Statistics {
 impl Statistics {
 	/// org.freedesktop.NetworkManager.Device.Statistics — Device Statistic Counters. Number of received bytes
 	pub fn rx_bytes(&self) -> Result<u64, Error> {
-		self.dbus.proxy(&self.path).rx_bytes()
+		nmdbus::device::Device::rx_bytes(&self.dbus.proxy(&self.path))
 	}
 	/// org.freedesktop.NetworkManager.Device.Statistics — Device Statistic Counters. Number of transmitted bytes
 	pub fn tx_bytes(&self) -> Result<u64, Error> {
-		self.dbus.proxy(&self.path).tx_bytes()
+		nmdbus::device::Device::rx_bytes(&self.dbus.proxy(&self.path))
 	}
 }
 pub struct Ipv4Config {
