@@ -32,7 +32,7 @@ simple-bytes = "0.2.11"
 memchr = "2.4.1"
 uuid = "0.8"
 serde1 = { package = "serde", version = "1.0", features = ["derive"], optional = true }
-nmdbus = { version = "1.20", optional = true }
+nmdbus = { git = "https://github.com/stevenleadbeater/nmdbus.git", optional = true }
 mmdbus = { version = "1.16", optional = true }
 dbus = { version = "0.9", optional = true, features = ["vendored"] }
 

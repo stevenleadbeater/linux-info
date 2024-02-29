@@ -7,11 +7,15 @@ use std::net::Ipv4Addr;
 use dbus::{Error, Path};
 use dbus::blocking::{Connection, Proxy};
 use dbus::arg::RefArg;
+use mmdbus::modem::Modem;
+use mmdbus::sim::Sim;
 
 use nmdbus::NetworkManager as DbusNetworkManager;
 use nmdbus::device::Device as DeviceTrait;
 use nmdbus::device_modem::DeviceModem;
+use nmdbus::device_statistics::DeviceStatistics;
 use nmdbus::ip4config::IP4Config;
+use crate::network::modem_manager::Sim;
 
 const DBUS_NAME: &str = "org.freedesktop.NetworkManager";
 const DBUS_PATH: &str = "/org/freedesktop/NetworkManager";
@@ -116,8 +120,34 @@ impl Device {
 	pub fn modem_apn(&self) -> Result<String, Error> {
 		self.dbus.proxy(&self.path).apn()
 	}
+
+
+	/// This Statistics object is the one used for Tx and Rx byte lookups
+	pub fn device_statistics(&self) -> Result<Statistics, Error> {
+		Ok(Statistics {
+			path: self.dbus.proxy(&self.path).device_statistics()?,
+			dbus: self.dbus.clone()
+		})
+	}
 }
 
+
+pub struct Statistics {
+	dbus: Dbus,
+	path: Path<'static>
+}
+
+
+impl Statistics {
+	/// org.freedesktop.NetworkManager.Device.Statistics — Device Statistic Counters. Number of received bytes
+	pub fn rx_bytes(&self) -> Result<u64, Error> {
+		self.dbus.proxy(&self.path).rx_bytes()
+	}
+	/// org.freedesktop.NetworkManager.Device.Statistics — Device Statistic Counters. Number of transmitted bytes
+	pub fn tx_bytes(&self) -> Result<u64, Error> {
+		self.dbus.proxy(&self.path).tx_bytes()
+	}
+}
 pub struct Ipv4Config {
 	dbus: Dbus,
 	path: Path<'static>
