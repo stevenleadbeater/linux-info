@@ -121,23 +121,6 @@ impl Device {
 	}
 
 
-	/// This Statistics object is the one used for Tx and Rx byte lookups
-	pub fn device_statistics(&self) -> Result<Statistics, Error> {
-		Ok(Statistics {
-			path: self.dbus.proxy(&self.path).device_statistics()?,
-			dbus: self.dbus.clone()
-		})
-	}
-}
-
-
-pub struct Statistics {
-	dbus: Dbus,
-	path: Path<'static>
-}
-
-
-impl Statistics {
 	/// org.freedesktop.NetworkManager.Device.Statistics — Device Statistic Counters. Number of received bytes
 	pub fn rx_bytes(&self) -> Result<u64, Error> {
 		nmdbus::device::Device::rx_bytes(&self.dbus.proxy(&self.path))
@@ -147,6 +130,7 @@ impl Statistics {
 		nmdbus::device::Device::rx_bytes(&self.dbus.proxy(&self.path))
 	}
 }
+
 pub struct Ipv4Config {
 	dbus: Dbus,
 	path: Path<'static>
