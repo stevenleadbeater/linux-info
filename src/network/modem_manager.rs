@@ -96,8 +96,44 @@ impl Modem {
 	pub fn device(&self) -> Result<String, Error> {
 		self.dbus.proxy(&self.path).device()
 	}
+
+	///The list of ports in the modem, given as an array of string and unsigned integer pairs.
+	/// The string is the port name or path, and the integer is the port type given as a MMModemPortType value.
+	/// Type of modem port.
+	/// MMModemPortType Members
+	///
+	/// 0 MM_MODEM_PORT_TYPE_UNKNOWN Unknown.
+	///
+	///
+	/// 1 MM_MODEM_PORT_TYPE_NET Net port.
+	///
+	///
+	/// 2 MM_MODEM_PORT_TYPE_AT AT port.
+	///
+	///
+	/// 3 MM_MODEM_PORT_TYPE_QCDM QCDM port.
+	///
+	///
+	/// 4 MM_MODEM_PORT_TYPE_GPS GPS port.
+	///
+	///
+	/// 5 MM_MODEM_PORT_TYPE_QMI QMI port.
+	///
+	///
+	/// 6 MM_MODEM_PORT_TYPE_MBIM MBIM port.
+	///
+	///
+	/// 7 MM_MODEM_PORT_TYPE_AUDIO Audio port. Since 1.12.
+	///
+	///
+	/// 8 MM_MODEM_PORT_TYPE_IGNORED Ignored port. Since 1.16.
 	pub fn ports(&self) -> Result<Vec<(String, u32)>, Error> {
 		self.dbus.proxy(&self.path).ports()
+	}
+
+	/// The name of the primary port using to control the modem.
+	pub fn primary_port(&self) -> Result<String, Error> {
+		self.dbus.proxy(&self.path).primary_port()
 	}
 
 	/// Overall state of the modem, given as a MMModemState value.
