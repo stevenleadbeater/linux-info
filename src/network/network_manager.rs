@@ -15,7 +15,6 @@ use nmdbus::device::Device as DeviceTrait;
 use nmdbus::device_modem::DeviceModem;
 use nmdbus::device_statistics::DeviceStatistics;
 use nmdbus::ip4config::IP4Config;
-use crate::network::modem_manager::Sim;
 
 const DBUS_NAME: &str = "org.freedesktop.NetworkManager";
 const DBUS_PATH: &str = "/org/freedesktop/NetworkManager";
