@@ -15,6 +15,9 @@ pub mod bios;
 #[cfg(feature = "network")]
 #[cfg_attr(docsrs, doc(cfg(feature = "network")))]
 pub mod network;
+#[cfg(feature = "dnsmasq")]
+#[cfg_attr(docsrs, doc(cfg(feature = "dnsmasq")))]
+mod dnsmasq;
 
 mod util;
 
