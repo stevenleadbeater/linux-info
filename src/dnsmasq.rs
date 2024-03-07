@@ -1,43 +1,46 @@
 //! get array with various metrics for DNS and DHCP
 
-use crate::util::read_to_string_mut;
+use std::sync::Arc;
+use std::time::Duration;
+use dbus::blocking::{Connection, Proxy};
+use dbus::{Error, Path};
+use dbus::blocking::stdintf::org_freedesktop_dbus::Properties;
 
-use std::{fs, io};
-use std::path::Path;
+const DBUS_NAME: &str = "uk.org.thekelleys.dnsmasq";
+const DBUS_PATH: &str = "/uk/org/thekelleys/dnsmasq/GetMetrics";
+const TIMEOUT: Duration = Duration::from_secs(2);
 
-/// Read uptime information from /uk/org/thekelleys/dnsmasq/GetMetrics.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Metrics {
-    raw: String
+#[derive(Clone)]
+struct Dbus {
+    conn: Arc<Connection>
 }
 
-impl Metrics {
-    fn path() -> &'static Path {
-        Path::new("/uk/org/thekelleys/dnsmasq/GetMetrics")
+impl Dbus {
+    fn connect() -> Result<Self, Error> {
+        Connection::new_system()
+            .map(Arc::new)
+            .map(|conn| Self { conn })
     }
 
-    #[cfg(test)]
-    fn from_string(raw: String) -> Self {
-        Self {raw}
+    fn proxy<'a, 'b>(
+        &'b self,
+        path: impl Into<Path<'a>>
+    ) -> Proxy<'a, &'b Connection> {
+        self.conn.with_proxy(DBUS_NAME, path, TIMEOUT)
     }
+}
 
-    /// Reads metrics from /uk/org/thekelleys/dnsmasq/GetMetrics.
-    pub fn read() -> io::Result<Self> {
-        Ok(Self {
-            raw: fs::read_to_string(Self::path())?
-        })
+#[derive(Clone)]
+pub struct DNSMasq {
+    dbus: Dbus
+}
+
+impl DNSMasq {
+    pub fn connect() -> Result<Self, Error> {
+        Dbus::connect()
+            .map(|dbus| Self { dbus })
     }
-
-    /// Reloads information without allocating.
-    pub fn reload(&mut self) -> io::Result<()> {
-        read_to_string_mut(Self::path(), &mut self.raw)
+    pub fn metrics(&self) -> Result<Vec<String>, Error> {
+        self.dbus.proxy(DBUS_PATH).get(DBUS_NAME, "GetMetrics")
     }
-
-    /// Main method to get metrics values. Returns every entry.
-    pub fn all_infos<'a>(&'a self) -> impl Iterator<Item=String> + 'a {
-        self.raw.split(' ')
-            .map(|v| v.to_string())
-    }
-
-
 }
