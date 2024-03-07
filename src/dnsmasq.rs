@@ -36,7 +36,6 @@ impl Metrics {
     /// Main method to get metrics values. Returns every entry.
     pub fn all_infos<'a>(&'a self) -> impl Iterator<Item=String> + 'a {
         self.raw.split(' ')
-            .filter_map(|v: &str| v.trim().parse().ok())
             .map(|v| v.to_string())
     }
 
