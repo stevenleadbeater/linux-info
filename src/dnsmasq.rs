@@ -41,6 +41,7 @@ impl DNSMasq {
             .map(|dbus| Self { dbus })
     }
     pub fn metrics(&self) -> Result<Vec<String>, Error> {
-        self.dbus.proxy(DBUS_PATH).get(DBUS_NAME, "GetMetrics")
+        self.dbus.proxy(DBUS_PATH).method_call(DBUS_NAME, "GetMetrics", ())
+            .and_then(|r: (Vec<String>, )| Ok(r.0, ))
     }
 }
