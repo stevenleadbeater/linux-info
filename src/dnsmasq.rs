@@ -7,7 +7,7 @@ use dbus::{Error, Path};
 use dbus::blocking::stdintf::org_freedesktop_dbus::Properties;
 
 const DBUS_NAME: &str = "uk.org.thekelleys.dnsmasq";
-const DBUS_PATH: &str = "/uk/org/thekelleys/dnsmasq/GetMetrics";
+const DBUS_PATH: &str = "/uk/org/thekelleys/dnsmasq";
 const TIMEOUT: Duration = Duration::from_secs(2);
 
 #[derive(Clone)]
