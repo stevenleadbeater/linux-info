@@ -1,5 +1,6 @@
 //! get array with various metrics for DNS and DHCP
 
+use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 use dbus::blocking::{Connection, Proxy};
@@ -38,8 +39,8 @@ impl DNSMasq {
         Dbus::connect()
             .map(|dbus| Self { dbus })
     }
-    pub fn metrics(&self) -> Result<Vec<Path<'static>>, Error> {
+    pub fn metrics(&self) -> Result<HashMap<String, u32>, Error> {
         self.dbus.proxy().method_call(DBUS_NAME, "GetMetrics", ())
-            .and_then(|r: (Vec<Path<'static>>, )| Ok(r.0, ))
+            .and_then(|r: (HashMap<String, u32>, )| Ok(r.0, ))
     }
 }
