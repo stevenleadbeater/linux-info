@@ -25,6 +25,7 @@ required-features = ["network"]
 network = ["nmdbus", "mmdbus", "dbus"]
 serde = ["serde1"]
 dnsmasq = ["dbus"]
+systemd = ["dbus"]
 
 [dependencies]
 byte-parser = { version = "0.2.1", features = ["unstable-parse-iter"] }

@@ -18,6 +18,9 @@ pub mod network;
 #[cfg(feature = "dnsmasq")]
 #[cfg_attr(docsrs, doc(cfg(feature = "dnsmasq")))]
 pub mod dnsmasq;
+#[cfg(feature = "systemd")]
+#[cfg_attr(docsrs, doc(cfg(feature = "systemd")))]
+pub mod systemd;
 
 mod util;
 
