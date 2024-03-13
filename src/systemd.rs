@@ -45,7 +45,7 @@ impl SystemD {
             .and_then(|r: (HashMap<String, u32>, )| Ok(r.0, ))
     }
     pub fn stop(&self, unit_name: String) -> Result<HashMap<String, u32>, Error> {
-        self.dbus.proxy().method_call(MANAGER_INTERFACE_NAME, "StartUnit", (unit_name.as_str(), ))
+        self.dbus.proxy().method_call(MANAGER_INTERFACE_NAME, "StopUnit", (unit_name.as_str(), ))
             .and_then(|r: (HashMap<String, u32>, )| Ok(r.0, ))
     }
 }
