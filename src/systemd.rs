@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Duration;
 use dbus::blocking::{Connection, Proxy};
-use dbus::{Error};
+use dbus::{Error, Path};
 
 const DBUS_NAME: &str = "org.freedesktop.systemd1";
 const DBUS_PATH: &str = "/org/freedesktop/systemd1";
@@ -40,13 +40,13 @@ impl SystemD {
         Dbus::connect()
             .map(|dbus| Self { dbus })
     }
-    pub fn start(&self, unit_name: String) -> Result<String, Error> {
+    pub fn start(&self, unit_name: String) -> Result<Path, Error> {
         self.dbus.proxy().method_call(MANAGER_INTERFACE_NAME, "StartUnit", (unit_name.as_str(), "replace"))
-            .and_then(|r: (String, )| Ok(r.0, ))
+            .and_then(|r: (Path, )| Ok(r.0, ))
     }
-    pub fn stop(&self, unit_name: String) -> Result<String, Error> {
+    pub fn stop(&self, unit_name: String) -> Result<Path, Error> {
         self.dbus.proxy().method_call(MANAGER_INTERFACE_NAME, "StopUnit", (unit_name.as_str(), "replace"))
-            .and_then(|r: (String, )| Ok(r.0, ))
+            .and_then(|r: (Path, )| Ok(r.0, ))
     }
 }
 
